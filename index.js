@@ -24,7 +24,6 @@ app.use(
     origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 cron.schedule("0 0 0 * * *", () => {
