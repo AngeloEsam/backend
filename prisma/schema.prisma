@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TypeStatusCampaign {
+  active
+  field
+  completed
+}
+
+enum TypeCategoryCampaign {
+  Education
+  Health
+  Arts
+  Tecnology
+  Social
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(50)
+  email     String     @unique @db.VarChar(100)
+  password  String     
+  campaign  Campaign[]
+  donors    Donors[]
+  createsAt DateTime   @default(now())
+}
+
+model Campaign {
+  id            Int                  @id @default(autoincrement())
+  title         String               @db.VarChar(200)
+  image         String  
+  category      TypeCategoryCampaign
+  description   String
+  goalAmount    Float
+  currentAmount Float                @default(0)
+  status        TypeStatusCampaign   @default(active)
+  numOfDonors   Int                  @default(0)
+  dateDue       DateTime
+  userId        Int
+  user          User                 @relation(fields: [userId], references: [id])
+  Donors        Donors[]
+  createdAt     DateTime             @default(now())
+}
+
+model Donors {
+  id         Int      @id @default(autoincrement())
+  amount     Float
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  campaignId Int
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
