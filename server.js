@@ -34,6 +34,6 @@ cron.schedule("0 0 0 * * *", () => {
 app.use("/api/user", userRoute);
 app.use("/api/campaign", campaignRoute);
 app.use("/api/donors", donorsRoute);
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
   console.log("server connected");
 });
